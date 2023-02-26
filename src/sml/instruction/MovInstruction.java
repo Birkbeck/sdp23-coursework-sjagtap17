@@ -7,25 +7,25 @@ import sml.Machine;
 import sml.RegisterName;
 
 /**
- * Represents the add Instruction, the context in which statement run.
+ * Represents the mov Instruction, the context in which statement run.
  * <p>
- * Add the contents of registers result and source and stores the result in register result
+ * Move: Store integer source in register result
  * <p>
- * An instance contains optional String label, Register result, Register source
+ * An instance contains optional String label, Register result, int source
  * <p>
- * Class contains methods to execute() add instruction, 
+ * Class contains methods to execute() mov instruction, 
  * <p>
  * toString() String representation of the statement
- * @author ...
+ * @author Swati Jagtap
  */
 
-public class AddInstruction extends Instruction {
+public class MovInstruction extends Instruction {
 	private final RegisterName result;
-	private final RegisterName source;
+	private final int source;
 
-	public static final String OP_CODE = "add";
+	public static final String OP_CODE = "mov";
 
-	public AddInstruction(String label, RegisterName result, RegisterName source) {
+	public MovInstruction(String label, RegisterName result, int source) {
 		super(label, OP_CODE);
 		this.result = result;
 		this.source = source;
@@ -33,9 +33,7 @@ public class AddInstruction extends Instruction {
 
 	@Override
 	public int execute(Machine m) {
-		int value1 = m.getRegisters().get(result);
-		int value2 = m.getRegisters().get(source);
-		m.getRegisters().set(result, value1 + value2);
+		m.getRegisters().set(result, source);
 		return NORMAL_PROGRAM_COUNTER_UPDATE;
 	}
 
@@ -51,7 +49,7 @@ public class AddInstruction extends Instruction {
 	
 	@Override
     public boolean equals(Object o) {
-        if (o instanceof AddInstruction i) 
+        if (o instanceof MovInstruction i) 
             return i.equals(o);
         return false;
     }

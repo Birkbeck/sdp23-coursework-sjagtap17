@@ -1,12 +1,15 @@
 package sml;
 
-// TODO: write a JavaDoc for the class
-
 /**
- * Represents an abstract instruction.
- *
+ * Represents an abstract instruction. <p>
+ * (This class represent abstract base class of the subclass for each of the machine instructions. <br>
+ * This class is abstract, because it should not be instantiated. <br>
+ * execute() is also abstract, forcing every subclass to implement it. <br>
+ * Every instruction has an optional label and an operation — that is exactly what is common to every instruction.)
+ * 
  * @author ...
  */
+
 public abstract class Instruction {
 	protected final String label;
 	protected final String opcode;
@@ -41,17 +44,23 @@ public abstract class Instruction {
 	 *          or NORMAL_PROGRAM_COUNTER_UPDATE to indicate that
 	 *          the instruction with the next address is to be executed
 	 */
-
 	public abstract int execute(Machine machine);
 
 	protected String getLabelString() {
 		return (getLabel() == null) ? "" : getLabel() + ": ";
 	}
 
-	// TODO: What does abstract in the declaration below mean?
-	//       (Write a short explanation.)
+	/**
+	 * String representation of the statement under execution
+	 * (Each instruction has optional label and different parameter-list to display)
+	 * @return pretty formatted version of the code.
+	 */
 	@Override
 	public abstract String toString();
 
-	// TODO: Make sure that subclasses also implement equals and hashCode (needed in class Machine).
+	@Override
+	public abstract int hashCode(); 
+	
+	@Override
+    public abstract boolean equals(Object o);
 }
