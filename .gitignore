@@ -189,3 +189,7 @@ gradle-app.setting
 
 .DS_Store
 
+/bin/
+
+.classpath
+.project
