@@ -10,7 +10,7 @@ import sml.Machine;
 import sml.Registers;
 import static sml.Registers.Register.*;
 
-class AddInstructionTest {
+class MulInstructionTest {
   private Machine machine;
   private Registers registers;
 
@@ -18,7 +18,6 @@ class AddInstructionTest {
   void setUp() {
     machine = new Machine(new Registers());
     registers = machine.getRegisters();
-    //...
   }
 
   @AfterEach
@@ -29,38 +28,38 @@ class AddInstructionTest {
 
   @Test
   void executeValid() {
-    registers.set(EAX, 5);
-    registers.set(EBX, 6);
-    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    registers.set(EAX, 2);
+    registers.set(EBX, 3);
+    Instruction instruction = new MulInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(11, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(6, machine.getRegisters().get(EAX));
   }
 
   @Test
   void executeValidTwo() {
-    registers.set(EAX, -5);
-    registers.set(EBX, 6);
-    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    registers.set(EAX, -2);
+    registers.set(EBX, 3);
+    Instruction instruction = new MulInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(1, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(-6, machine.getRegisters().get(EAX));
   }
   
   @Test
   void executeValidThree() {
-    registers.set(EAX, -5);
-    registers.set(EBX, -6);
-    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    registers.set(EAX, -2);
+    registers.set(EBX, -3);
+    Instruction instruction = new MulInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(-11, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(6, machine.getRegisters().get(EAX));
   }
   
   @Test
   void toStringValid() {
-    Assertions.assertEquals("f3: add EAX EBX", new AddInstruction("f3", EAX, EBX).toString());
+    Assertions.assertEquals("f3: mul EAX EBX", new MulInstruction("f3", EAX, EBX).toString());
   }
   
   @Test
   void toStringValidTwo() {
-    Assertions.assertEquals("add EAX EBX", new AddInstruction(null, EAX, EBX).toString());
+    Assertions.assertEquals("mul EAX EBX", new MulInstruction(null, EAX, EBX).toString());
   }
 }
