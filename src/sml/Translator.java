@@ -1,14 +1,10 @@
 package sml;
 
-import sml.instruction.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
-
-import static sml.Registers.Register;
 
 /**
  * This class ....
@@ -18,7 +14,8 @@ import static sml.Registers.Register;
  * @author ...
  */
 public final class Translator {
-
+	// do not execute program if exception occurred, as it may lead to possible infinite looping
+	private boolean programException = false; 
     private final String fileName; // source file of SML code
 
     // line contains the characters in the current line that's not been processed yet
@@ -39,6 +36,7 @@ public final class Translator {
 
             // Each iteration processes line and reads the next input line into "line"
             while (sc.hasNextLine()) {
+            	
                 line = sc.nextLine();
                 String label = getLabel();
 
@@ -61,54 +59,18 @@ public final class Translator {
      * The input line should consist of a single SML instruction,
      * with its label already removed.
      */
-    public Instruction getInstruction(String label){
-    	if (line.isEmpty())
-            return null;
 
-        String opcode = scan();
-        switch (opcode) {
-            case AddInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new AddInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-            case SubInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new SubInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-            case MulInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new MulInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-            case DivInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new DivInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-            case MovInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new MovInstruction(label, Register.valueOf(r), Integer.parseInt(s));
-            }
-            case OutInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new OutInstruction(label, Register.valueOf(r));
-            }
-            case JnzInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new JnzInstruction(label, Register.valueOf(r), s);
-            }
-            default -> {
-                System.out.println("Unknown instruction: " + opcode);
-            }
-        }
-        return null;
-    }
-
+	public Instruction getInstruction(String label) {
+		if (line.equals("")) {
+			return null;
+		}
+		String opcode = scan();
+		InstructionSupportFactory factory = new InstructionSupportFactory();
+		
+		Instruction ins = factory.getInstructionInstance(label, line.trim(), opcode, Instruction.class);
+		if(ins == null) setProgramException(true);
+		return ins;
+	}
 
     private String getLabel() {
         String word = scan();
@@ -136,4 +98,12 @@ public final class Translator {
 
         return line;
     }
+
+	public boolean getProgramException() {
+		return programException;
+	}
+
+	public void setProgramException(boolean programException) {
+		this.programException = programException;
+	}
 }
