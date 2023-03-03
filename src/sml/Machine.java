@@ -10,7 +10,7 @@ import static sml.Instruction.NORMAL_PROGRAM_COUNTER_UPDATE;
 /**
  * Represents the machine, the context in which programs run.
  * <p>
- * An instance contains 32 registers and methods to access and change them.
+ * An instance contains 8 registers and methods to access and change them.
  *
  */
 public final class Machine {
@@ -70,21 +70,15 @@ public final class Machine {
 				.collect(Collectors.joining("\n"));
 	}
 
-	// TODO: use pattern matching for instanceof
-	// https://docs.oracle.com/en/java/javase/14/language/pattern-matching-instanceof-operator.html
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Machine) {
-			// TODO:
-			Machine other = (Machine) o;
-			return Objects.equals(this.labels, other.labels)
-					&& Objects.equals(this.program, other.program)
-					&& Objects.equals(this.registers, other.registers)
-					&& this.programCounter == other.programCounter;
+		if (o instanceof Machine m) {
+			return m.equals(o);
 		}
 		return false;
 	}
-
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(labels, program, registers, programCounter);

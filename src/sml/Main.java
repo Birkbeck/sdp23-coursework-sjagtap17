@@ -21,14 +21,16 @@ public class Main {
 
 			System.out.println("Here is the program; it has " + m.getProgram().size() + " instructions.");
 			System.out.println(m);
-
-			System.out.println("Beginning program execution.");
-			m.execute();
-			System.out.println("Ending program execution.");
-
-			System.out.println("Values of registers at program termination:" + m.getRegisters() + ".");
-		}
-		catch (IOException e) {
+			if (t.getProgramException()) {
+				System.err.println("Not executing program as an exception occurred and to avoid possible infinite looping");
+			}
+			else {
+				System.out.println("Beginning program execution.");
+				m.execute();
+				System.out.println("Ending program execution.");
+			}
+				System.out.println("Values of registers at program termination:" + m.getRegisters() + ".");
+		} catch (IOException e) {
 			System.out.println("Error reading the program from " + args[0]);
 		}
 	}
